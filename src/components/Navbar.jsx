@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -34,6 +35,8 @@ const navLinks = [
 export default function Navbar() {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
+    const pathname = usePathname();
+    const isHome = pathname === "/";
 
     useEffect(() => {
         const handleScroll = () => {
@@ -52,11 +55,11 @@ export default function Navbar() {
                     href="/"
                     className={cn(
                         "text-2xl font-bold tracking-tighter relative z-50 group flex items-center gap-2",
-                        isScrolled ? "text-black" : "text-white"
+                        isScrolled || !isHome ? "text-black" : "text-white"
                     )}
                 >
                     <span className="bg-white px-2 font-black tracking-wide text-black">PREFENZO</span>
-                    <span className={cn("font-black  transition-colors tracking-wide", isScrolled ? "text-gray-600 group-hover:text-blue-600" : "text-gray-300 group-hover:text-white")}>
+                    <span className={cn("font-black  transition-colors tracking-wide", isScrolled || !isHome ? "text-gray-600 group-hover:text-blue-600" : "text-gray-300 group-hover:text-white")}>
                         STUDIOS
                     </span>
                 </Link>
@@ -68,17 +71,17 @@ export default function Navbar() {
                             <Link
                                 href={link.href}
                                 className={cn(
-                                    "text-sm font-medium hover:text-blue-600 transition-colors tracking-wide relative flex items-center gap-1 py-4",
-                                    isScrolled ? "text-gray-600" : "text-white"
+                                    "text-base font-medium hover:text-blue-600 transition-colors tracking-wide relative flex items-center gap-1 py-4",
+                                    isScrolled || !isHome ? "text-gray-600" : "text-white"
                                 )}
                             >
                                 {link.name}
-                                <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-blue-600 transition-all duration-300 group-hover/item:w-full" />
+                                <span className="absolute -bottom-1 left-0 w-0 h-px bg-blue-600 transition-all duration-300 group-hover/item:w-full" />
                             </Link>
 
                             {/* Dropdown Desktop */}
                             {link.dropdown && (
-                                <div className="absolute top-[100%] left-0 w-48 pt-2 opacity-0 invisible group-hover/item:opacity-100 group-hover/item:visible transition-all duration-300 translate-y-2 group-hover/item:translate-y-0 shadow-2xl">
+                                <div className="absolute top-full left-0 w-48 pt-2 opacity-0 invisible group-hover/item:opacity-100 group-hover/item:visible transition-all duration-300 translate-y-2 group-hover/item:translate-y-0 shadow-2xl">
                                     <div className="bg-white/90 backdrop-blur-xl border border-gray-100 rounded-xl overflow-hidden py-2 p-1 shadow-xl">
                                         {link.dropdown.map((item) => (
                                             <Link
