@@ -43,7 +43,7 @@ const focusAreas = [
 
 export default function CoreFocus() {
     return (
-        <section className="py-24 bg-gray-50 text-gray-900">
+        <section className="py-24 bg-gray-50 text-gray-900 snap-start snap-stop-always">
             <div className="container mx-auto px-6">
                 <div className="mb-16">
                     <h2 className="text-3xl md:text-5xl font-bold mb-6">What We Do</h2>
@@ -61,7 +61,7 @@ export default function CoreFocus() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: index * 0.1, duration: 0.6 }}
-                            className="group relative h-[500px] w-full rounded-[2rem] overflow-hidden cursor-pointer shadow-xl hover:shadow-2xl transition-all duration-500"
+                            className="group relative h-[500px] w-full rounded-4xl overflow-hidden cursor-pointer shadow-xl hover:shadow-2xl transition-all duration-500"
                         >
                             {/* Background Image with Parallax-like Zoom */}
                             <div className="absolute inset-0 w-full h-full overflow-hidden">
@@ -70,14 +70,14 @@ export default function CoreFocus() {
                                     alt={area.title}
                                     className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
+                                <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/40 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
                             </div>
 
                             {/* Floating Glass Content Card */}
                             <div className="absolute bottom-0 left-0 right-0 p-6 z-20 translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
                                 <div className="bg-white/10 backdrop-blur-xl border border-white/10 p-6 rounded-3xl overflow-hidden relative">
                                     {/* Glass Shine Effect */}
-                                    <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/50 to-transparent opacity-50" />
+                                    <div className="absolute top-0 left-0 w-full h-px bg-linear-to-r from-transparent via-white/50 to-transparent opacity-50" />
 
                                     <div className="flex items-start justify-between mb-4">
                                         <div className="p-3 bg-white text-black rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-300">
@@ -88,7 +88,7 @@ export default function CoreFocus() {
                                         </div>
                                     </div>
 
-                                    <h3 className="text-2xl font-bold text-white mb-2 font-[family-name:var(--font-manrope)] tracking-tight">
+                                    <h3 className="text-2xl font-bold text-white mb-2 font-(family-name:--font-manrope) tracking-tight">
                                         {area.title}
                                     </h3>
 

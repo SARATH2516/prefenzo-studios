@@ -2,7 +2,7 @@
 
 export default function WhyUs() {
     return (
-        <section className="py-24 bg-white text-black">
+        <section className="py-24 bg-white text-black snap-start snap-stop-always">
             <div className="container mx-auto px-6">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                     <div>

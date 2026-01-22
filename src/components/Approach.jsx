@@ -1,115 +1,192 @@
 "use client";
-import { motion } from "framer-motion";
-import { Search, Map, Zap, Rocket, LineChart } from "lucide-react";
+import { useRef, useState, useEffect } from "react";
+import { motion, useScroll, useSpring, useMotionValueEvent, useTransform, useInView } from "framer-motion";
+import { Search, Map, Zap, Rocket, LineChart, ArrowRight } from "lucide-react";
 
 const steps = [
     {
         number: "01",
         title: "Understand",
-        desc: "your business and audience",
-        icon: <Search className="w-6 h-6 text-blue-400" />
+        headline: "Deep Dive Analysis",
+        desc: "We begin by immersing ourselves in your brand's world. Understanding your audience, market position, and core objectives is the foundation of our strategy.",
+        icon: <Search className="w-8 h-8 text-white" />,
+        color: "bg-blue-600",
+        textColor: "text-blue-600",
+        image: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1600&q=80"
     },
     {
         number: "02",
         title: "Plan",
-        desc: "content and marketing direction",
-        icon: <Map className="w-6 h-6 text-purple-400" />
+        headline: "Strategic Roadmap",
+        desc: "Data meets creativity. We craft a comprehensive roadmap that defines content pillars, channels, and the tone of voice that will resonate with your audience.",
+        icon: <Map className="w-8 h-8 text-white" />,
+        color: "bg-purple-600",
+        textColor: "text-purple-600",
+        image: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=1600&q=80"
     },
     {
         number: "03",
         title: "Execute",
-        desc: "shoots, creatives, and campaigns",
-        icon: <Zap className="w-6 h-6 text-yellow-400" />
+        headline: "Creative Production",
+        desc: "This is where magic happens. Our team of expert creators brings the strategy to life with high-fidelity visuals, compelling copy, and dynamic media.",
+        icon: <Zap className="w-8 h-8 text-white" />,
+        color: "bg-yellow-500",
+        textColor: "text-yellow-500",
+        image: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=1600&q=80"
     },
     {
         number: "04",
         title: "Promote",
-        desc: "strategically to the right audience",
-        icon: <Rocket className="w-6 h-6 text-pink-400" />
+        headline: "Targeted Distribution",
+        desc: "Great content needs eyes. We leverage targeted distribution channels to ensure your message reaches the right people at the right time.",
+        icon: <Rocket className="w-8 h-8 text-white" />,
+        color: "bg-pink-600",
+        textColor: "text-pink-600",
+        image: "https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?auto=format&fit=crop&w=1600&q=80"
     },
     {
         number: "05",
         title: "Monitor",
-        desc: "performance and improve continuously",
-        icon: <LineChart className="w-6 h-6 text-green-400" />
+        headline: "Continuous Optimization",
+        desc: "We don't set and forget. We rigorously track performance metrics, analyze engagement, and refine our approach for maximum ROI.",
+        icon: <LineChart className="w-8 h-8 text-white" />,
+        color: "bg-green-600",
+        textColor: "text-green-600",
+        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1600&q=80"
     },
 ];
 
 export default function Approach() {
+    const containerRef = useRef(null);
+    const [activeStep, setActiveStep] = useState(0);
+
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ["start start", "end end"],
+    });
+
+    // Directly transform scroll progress to height/scale for absolute precision
+    const progressScale = useTransform(scrollYProgress, [0, 1], [0, 1]);
+    const smoothProgress = useSpring(progressScale, { damping: 30, stiffness: 200 });
+
+    useMotionValueEvent(scrollYProgress, "change", (latest) => {
+        const stepIndex = Math.min(
+            Math.floor(latest * steps.length),
+            steps.length - 1
+        );
+        setActiveStep(stepIndex);
+    });
+
     return (
-        <section className="relative py-32 overflow-hidden">
-            {/* Background  & Overlay */}
-            <div className="absolute inset-0 z-0">
-                <img
-                    src="/approach2.jpg"
-                    alt="Office Background"
-                    className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0  backdrop-blur-sm" />
-                <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-white/50 opacity-80" />
+        <section ref={containerRef} className="relative h-[500vh] bg-white snap-start">
+            {/* Scroll Snap Anchors - Invisible divs to "catch" the scroll */}
+            <div className="absolute inset-0 pointer-events-none">
+                {steps.map((_, i) => (
+                    <div
+                        key={i}
+                        className="h-screen w-full snap-start snap-stop-always"
+                    />
+                ))}
             </div>
 
-            <div className="container mx-auto px-6 relative z-10">
-                <div className="flex flex-col md:flex-row justify-between items-end gap-12 mb-20 border-b border-gray-200 pb-12">
-                    <div className="max-w-2xl">
-                        <motion.h2
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            className="text-4xl md:text-6xl font-bold mb-6 text-gray-900 tracking-tight font-[family-name:var(--font-manrope)]"
-                        >
-                            Our Approach
-                        </motion.h2>
-                        <motion.p
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: 0.1 }}
-                            className="text-black text-lg leading-relaxed"
-                        >
-                            A refined workflow designed for impact. We follow a clear, proven process that ensures consistency, quality, and measurable results for your brand.
-                        </motion.p>
+            <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col md:flex-row bg-white z-20">
+
+                {/* Left Side: Content & Navigation */}
+                <div className="w-full md:w-1/2 p-8 md:p-20 flex flex-col justify-center relative bg-white z-20 order-2 md:order-1">
+
+                    {/* Progress Indicator - Prominent & Reliable */}
+                    <div className="absolute left-8 md:left-12 top-1/2 -translate-y-1/2 h-[300px] w-[4px] bg-gray-100 hidden md:block rounded-full overflow-hidden">
+                        <motion.div
+                            style={{ scaleY: smoothProgress, transformOrigin: "top" }}
+                            className="w-full h-full bg-black"
+                        />
+                    </div>
+
+                    <div className="max-w-xl mx-auto md:ml-16">
+                        <div className="mb-12">
+                            <h2 className="text-sm font-bold tracking-widest text-gray-400 uppercase mb-2">Our Process</h2>
+                            <h3 className="text-4xl md:text-5xl font-bold text-black font-(family-name:--font-manrope)">
+                                How We Work
+                            </h3>
+                        </div>
+
+                        <div className="relative h-[300px]">
+                            {steps.map((step, index) => (
+                                <motion.div
+                                    key={index}
+                                    initial={false}
+                                    animate={{
+                                        opacity: activeStep === index ? 1 : 0,
+                                        y: activeStep === index ? 0 : 20,
+                                        pointerEvents: activeStep === index ? "auto" : "none"
+                                    }}
+                                    transition={{ duration: 0.5, ease: "easeInOut" }}
+                                    className="absolute top-0 left-0 w-full"
+                                >
+                                    <div className="flex items-center gap-4 mb-6">
+                                        <span className={`text-6xl font-bold ${step.textColor} stroke-text`}>
+                                            {step.number}
+                                        </span>
+                                        <div className={`p-3 rounded-xl ${step.color} shadow-lg scale-110`}>
+                                            {step.icon}
+                                        </div>
+                                    </div>
+
+                                    <h4 className="text-3xl font-bold text-gray-900 mb-4 font-(family-name:--font-manrope)">
+                                        {step.headline}
+                                    </h4>
+
+                                    <p className="text-lg text-gray-600 leading-relaxed mb-8">
+                                        {step.desc}
+                                    </p>
+
+                                    <button className="group flex items-center text-sm font-semibold text-black gap-2 hover:gap-3 transition-all">
+                                        Learn more <ArrowRight className="w-4 h-4" />
+                                    </button>
+                                </motion.div>
+                            ))}
+                        </div>
                     </div>
                 </div>
 
-                {/* Horizontal Steps Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
+                {/* Right Side: Visuals - With Curve & Padding */}
+                <div className="w-full md:w-1/2 h-[40vh] md:h-full relative overflow-hidden order-1 md:order-2 bg-white flex items-center justify-center p-8 md:pl-16 md:pr-8">
                     {steps.map((step, index) => (
-                        <motion.div
+                        <div
                             key={index}
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: index * 0.1, duration: 0.5 }}
-                            className="group relative h-full"
+                            className="absolute inset-0 w-full h-full flex items-center justify-center p-8 md:pl-16"
                         >
-                            {/* Connector Line (Desktop) - except last item */}
-                            {index !== steps.length - 1 && (
-                                <div className="absolute top-8 left-1/2 w-full h-[1px] bg-gradient-to-r from-gray-300 to-transparent hidden md:block" />
-                            )}
+                            {/* Clipping Mask Animation Container */}
+                            <motion.div
+                                initial={{ clipPath: "inset(50% 50% 50% 50%)", borderRadius: "24px" }}
+                                animate={{
+                                    clipPath: activeStep === index ? "inset(0% 0% 0% 0%)" : "inset(50% 50% 50% 50%)",
+                                    zIndex: activeStep === index ? 10 : 0,
+                                    borderRadius: "24px"
+                                }}
+                                transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                                className="w-full h-[65%] relative"
+                            >
+                                <div className="relative w-full h-full rounded-3xl overflow-hidden shadow-2xl">
+                                    <img
+                                        src={step.image}
+                                        alt={step.title}
+                                        className="w-full h-full object-cover scale-105"
+                                    />
+                                    {/* Modern gradient overlay */}
+                                    <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
 
-                            <div className="bg-white border border-gray-200 p-8 rounded-2xl h-full shadow-sm hover:shadow-xl hover:border-blue-200 transition-all duration-500 group-hover:-translate-y-2">
-
-                                <div className="flex items-center justify-between mb-6">
-                                    <div className="p-3 bg-white rounded-xl border border-gray-100 shadow-sm group-hover:scale-110 transition-transform duration-300">
-                                        {step.icon}
+                                    {/* Floating Label on Image */}
+                                    <div className="absolute bottom-12 left-12 text-white p-6 backdrop-blur-md bg-white/10 rounded-2xl border border-white/20 shadow-2xl">
+                                        <h3 className="text-2xl font-bold font-(family-name:--font-manrope)">{step.title}</h3>
+                                        <div className={`h-1.5 w-16 ${step.color} mt-3 rounded-full`} />
                                     </div>
-                                    <span className="text-4xl font-bold text-black/20 font-[family-name:var(--font-manrope)] group-hover:text-black/40 transition-colors">
-                                        {step.number}
-                                    </span>
                                 </div>
-
-                                <h3 className="text-xl font-bold text-black mb-3 group-hover:text-blue-600 transition-colors">
-                                    {step.title}
-                                </h3>
-
-                                <p className="text-gray-800 text-sm leading-relaxed group-hover:text-black transition-colors">
-                                    {step.desc}
-                                </p>
-                            </div>
-                        </motion.div>
+                            </motion.div>
+                        </div>
                     ))}
                 </div>
+
             </div>
         </section>
     );

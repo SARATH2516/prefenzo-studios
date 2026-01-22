@@ -38,7 +38,7 @@ const projects = [
 
 export default function Portfolio() {
     return (
-        <section id="portfolio" className="py-24 bg-white">
+        <section id="portfolio" className="py-24 bg-white snap-start snap-stop-always">
             <div className="container mx-auto px-6">
                 <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-6">
                     <div>

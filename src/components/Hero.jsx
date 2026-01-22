@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 export default function Hero() {
     // Force hydration sync
     return (
-        <section id="home" className="min-h-[100vh] w-full flex flex-col justify-center items-center relative overflow-hidden ">
+        <section id="home" className="min-h-screen w-full flex flex-col justify-center items-center relative overflow-hidden snap-start snap-stop-always">
             {/* Background with Light Blue Gradient */}
             {/* Background Video */}
             <div className="absolute inset-0 z-0 overflow-hidden">
@@ -27,7 +27,7 @@ export default function Hero() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, ease: "easeOut" }}
                 >
-                    <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-[0.05em] leading-tight mb-8 text-white uppercase font-[family-name:var(--font-manrope)] drop-shadow-2xl">
+                    <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-[0.05em] leading-tight mb-8 text-white uppercase font-(family-name:--font-manrope) drop-shadow-2xl">
                         Complete Digital Partner <br />
                         <span className="block text-3xl md:text-5xl mt-2 text-gray-100">For Growing Businesses</span>
                     </h1>

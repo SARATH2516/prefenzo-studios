@@ -16,7 +16,7 @@ const industries = [
 
 export default function IndustryList() {
     return (
-        <section className="py-24 bg-white text-gray-900">
+        <section className="py-24 bg-white text-gray-900 snap-start snap-stop-always">
             <div className="container mx-auto px-6">
                 <div className="text-center max-w-3xl mx-auto mb-16">
                     <h2 className="text-3xl md:text-5xl font-bold mb-6">Industries We Work With</h2>
