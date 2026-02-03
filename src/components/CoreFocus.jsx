@@ -1,110 +1,193 @@
 "use client";
-import { motion } from "framer-motion";
-import { Camera, PenTool, Share2, TrendingUp, Users, Plane } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Camera, PenTool, Share2, TrendingUp, Users, Plane, ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 const focusAreas = [
     {
-        icon: <Camera size={32} />,
+        icon: <Camera size={24} />,
         title: "Visual production",
-        description: "Photo, video, and cinematic shoots that capture attention.",
-        image: "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?q=80&w=800&auto=format&fit=crop"
+        subtitle: "CINEMATOGRAPHY & PHOTOGRAPHY",
+        description: "High-end production and artistic direction.",
+        image: "/HOME PAGE/VISUAL PRODUCTION.jpg"
     },
     {
-        icon: <PenTool size={32} />,
-        title: "Content creation & design",
-        description: "Graphics and videos that communicate your brand message.",
-        image: "https://i.pinimg.com/736x/8e/b7/dd/8eb7dd608c85b3562ebe7e72d8189604.jpg"
+        icon: <PenTool size={24} />,
+        title: "Content creation",
+        subtitle: "GRAPHIC DESIGN & MOTION",
+        description: "Impactful graphics and videos with precision.",
+        image: "/HOME PAGE/CONTENT CREATION.jpg"
     },
     {
-        icon: <Share2 size={32} />,
-        title: "Social media management",
-        description: "Consistent presence to build a loyal community.",
-        image: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?q=80&w=800&auto=format&fit=crop"
+        icon: <Share2 size={24} />,
+        title: "Social media",
+        subtitle: "MANAGEMENT & STRATEGY",
+        description: "Establishing a consistent, high-end presence.",
+        image: "/HOME PAGE/SOCIAL MEDIA MANAGEMENT.jpg"
     },
     {
-        icon: <TrendingUp size={32} />,
-        title: "Digital marketing & ads",
-        description: "Strategic promotions to reach your ideal customers.",
-        image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop"
+        icon: <TrendingUp size={24} />,
+        title: "Digital marketing",
+        subtitle: "STRATEGIC GROWTH & ADS",
+        description: "Result-driven promotions to scale your brand.",
+        image: "/HOME PAGE/DIGITAL MEDIA MARKETING.jpg"
     },
     {
-        icon: <Users size={32} />,
+        icon: <Users size={24} />,
         title: "Audience reach",
-        description: "Expanding your business visibility and growth.",
-        image: "https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=800&auto=format&fit=crop"
+        subtitle: "VISIBILITY & ENGAGEMENT",
+        description: "Strategic maneuvers to expand business visibility.",
+        image: "/HOME PAGE/AUDIENCE REACH.jpg"
     },
     {
-        icon: <Plane size={32} />,
+        icon: <Plane size={24} />,
         title: "Drone Shoots",
-        description: "Breathtaking aerial perspectives that elevate your brand narrative.",
-        image: "https://images.unsplash.com/photo-1473968512647-3e447244af8f?q=80&w=800&auto=format&fit=crop"
+        subtitle: "AERIAL PERSPECTIVES",
+        description: "Breathtaking aerial views captured with precision.",
+        image: "/HOME PAGE/DRONE.jpg"
     }
 ];
 
 export default function CoreFocus() {
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+    const [isLeft, setIsLeft] = useState(false);
+    const [isHovering, setIsHovering] = useState(false);
+
+    const handleMouseMove = (e) => {
+        const { clientX, clientY } = e;
+        setMousePos({ x: clientX, y: clientY });
+        setIsLeft(clientX < window.innerWidth / 2);
+    };
+
+    const handleClick = () => {
+        if (isLeft) {
+            setCurrentIndex((prev) => (prev - 1 + focusAreas.length) % focusAreas.length);
+        } else {
+            setCurrentIndex((prev) => (prev + 1) % focusAreas.length);
+        }
+    };
+
+    const getVisibleItems = () => {
+        const len = focusAreas.length;
+        return [
+            { ...focusAreas[(currentIndex - 1 + len) % len], pos: 'left' },
+            { ...focusAreas[currentIndex], pos: 'center' },
+            { ...focusAreas[(currentIndex + 1) % len], pos: 'right' }
+        ];
+    };
+
+    const items = getVisibleItems();
+
     return (
-        <section className="py-24 bg-gray-50 text-gray-900 snap-start snap-stop-always">
-            <div className="container mx-auto px-6">
-                <div className="mb-16">
-                    <h2 className="text-3xl md:text-5xl font-bold mb-6">What We Do</h2>
-                    <div className="w-24 h-1 bg-blue-600 mb-8"></div>
-                    <p className="text-gray-600 text-lg max-w-2xl leading-relaxed">
-                        We help businesses build strong digital presence through professional shoots, creative content, digital marketing, and paid promotions — all managed end to end.
-                    </p>
-                </div>
+        <section
+            onMouseMove={handleMouseMove}
+            onMouseEnter={() => setIsHovering(true)}
+            onMouseLeave={() => setIsHovering(false)}
+            onClick={handleClick}
+            className="py-20 bg-white text-black snap-start overflow-hidden relative select-none cursor-none min-h-[850px] flex flex-col justify-center"
+        >
+            {/* Mubien Arrow Cursor */}
+            <AnimatePresence>
+                {isHovering && (
+                    <motion.div
+                        className="fixed top-0 left-0 pointer-events-none z-50 flex items-center justify-center"
+                        initial={{ opacity: 0, scale: 0 }}
+                        animate={{
+                            x: mousePos.x - 40,
+                            y: mousePos.y - 40,
+                            rotate: isLeft ? 180 : 0,
+                            opacity: 1,
+                            scale: 1
+                        }}
+                        exit={{ opacity: 0, scale: 0 }}
+                        transition={{ type: "spring", stiffness: 500, damping: 30, mass: 0.2 }}
+                    >
+                        <div className="w-20 h-20 rounded-full border border-black/10 bg-black/5 backdrop-blur-sm flex items-center justify-center text-black">
+                            <ArrowRight size={32} strokeWidth={1} />
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {focusAreas.map((area, index) => (
-                        <motion.div
-                            key={index}
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: index * 0.1, duration: 0.6 }}
-                            className="group relative h-[500px] w-full rounded-4xl overflow-hidden cursor-pointer shadow-xl hover:shadow-2xl transition-all duration-500"
-                        >
-                            {/* Background Image with Parallax-like Zoom */}
-                            <div className="absolute inset-0 w-full h-full overflow-hidden">
-                                <img
-                                    src={area.image}
-                                    alt={area.title}
-                                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-                                />
-                                <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/40 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
-                            </div>
+            <div className="container mx-auto px-10 mb-2 z-20">
+                <h2 className="text-[30px] font-black tracking-[0.3em] text-gray-800 uppercase">SERVICES</h2>
+            </div>
 
-                            {/* Floating Glass Content Card */}
-                            <div className="absolute bottom-0 left-0 right-0 p-6 z-20 translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
-                                <div className="bg-white/10 backdrop-blur-xl border border-white/10 p-6 rounded-3xl overflow-hidden relative">
-                                    {/* Glass Shine Effect */}
-                                    <div className="absolute top-0 left-0 w-full h-px bg-linear-to-r from-transparent via-white/50 to-transparent opacity-50" />
+            <div className="relative w-full h-[600px] flex items-center justify-center">
 
-                                    <div className="flex items-start justify-between mb-4">
-                                        <div className="p-3 bg-white text-black rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-300">
-                                            {area.icon}
-                                        </div>
-                                        <div className="w-10 h-10 rounded-full border border-white/30 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 transition-all duration-500">
-                                            <span className="text-xl">→</span>
-                                        </div>
-                                    </div>
-
-                                    <h3 className="text-2xl font-bold text-white mb-2 font-(family-name:--font-manrope) tracking-tight">
-                                        {area.title}
+                <AnimatePresence mode="popLayout" initial={false}>
+                    {items.map((item, idx) => {
+                        const isCenter = item.pos === 'center';
+                        return (
+                            <motion.div
+                                key={`${item.title}-${currentIndex}-${item.pos}`}
+                                initial={{ opacity: 0, scale: 0.8, x: item.pos === 'right' ? "30%" : "-30%" }}
+                                animate={{
+                                    opacity: isCenter ? 1 : 0.1,
+                                    x: item.pos === 'center' ? 0 : (item.pos === 'left' ? "-65vw" : "65vw"),
+                                    scale: isCenter ? 1 : 0.65,
+                                    filter: isCenter ? "grayscale(0%)" : "grayscale(100%)",
+                                    zIndex: isCenter ? 30 : 10
+                                }}
+                                exit={{ opacity: 0, scale: 0.6, x: item.pos === 'left' ? "-40%" : "40%" }}
+                                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                                className="absolute flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-32 w-full max-w-7xl px-10"
+                            >
+                                {/* Text Side */}
+                                <div className={`flex-1 text-left transition-opacity duration-500 ${isCenter ? 'opacity-100' : 'opacity-0'}`}>
+                                    <span className="text-xs font-black tracking-[0.4em] text-gray-700 mb-6 block uppercase font-outfit">
+                                        {item.subtitle}
+                                    </span>
+                                    <h3 className="text-5xl md:text-7xl font-black mb-10 leading-[0.85] tracking-tighter uppercase font-inter max-w-md">
+                                        {item.title}
                                     </h3>
 
-                                    <div className="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-[grid-template-rows] duration-500 ease-out">
-                                        <div className="overflow-hidden">
-                                            <p className="text-gray-200 text-sm leading-relaxed pt-2 border-t border-white/10 mt-2">
-                                                {area.description}
-                                            </p>
-                                        </div>
+                                    <Link href="/services">
+                                        <button className="px-12 py-3.5 rounded-full border border-black text-[10px] font-black tracking-widest uppercase hover:bg-black hover:text-white transition-all duration-300">
+                                            Our Services
+                                        </button>
+                                    </Link>
+
+                                    {/* Numbering */}
+                                    <div className="mt-6 flex items-baseline gap-2 text-gray-700 font-black">
+                                        <span className="text-sm">0{currentIndex + 1}</span>
+                                        <span className="text-[10px] opacity-30">/</span>
+                                        <span className="text-[10px] opacity-30">0{focusAreas.length}</span>
                                     </div>
                                 </div>
-                            </div>
-                        </motion.div>
-                    ))}
-                </div>
+
+                                {/* Image Side */}
+                                <div className="relative lg:translate-x-32">
+                                    <motion.div
+                                        animate={{
+                                            rotate: isCenter ? -4 : (item.pos === 'left' ? 10 : -10)
+                                        }}
+                                        className="relative w-[300px] md:w-[450px] aspect-[4/5] bg-gray-50 border border-gray-100 shadow-[0_60px_120px_-20px_rgba(0,0,0,0.15)] overflow-hidden rounded-2xl"
+                                    >
+                                        <img
+                                            src={item.image}
+                                            alt={item.title}
+                                            className="w-full h-full object-cover transition-transform duration-[2.5s] hover:scale-110"
+                                        />
+                                        {isCenter && (
+                                            <div className="absolute top-8 right-8 w-16 h-16 bg-black flex items-center justify-center rounded-full text-white z-20">
+                                                {item.icon}
+                                            </div>
+                                        )}
+                                    </motion.div>
+                                </div>
+
+                                <div className="flex-1 hidden lg:block"></div>
+                            </motion.div>
+                        );
+                    })}
+                </AnimatePresence>
             </div>
+
+            {/* Bottom guide */}
+
         </section>
     );
 }

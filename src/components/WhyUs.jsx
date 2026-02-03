@@ -29,12 +29,12 @@ export default function WhyUs() {
                     </div>
                 </div>
 
-                <div className="mt-20 bg-blue-600 text-white rounded-3xl p-12 text-center shadow-2xl shadow-blue-200">
+                <div className="mt-20 bg-gray-700 text-white rounded-3xl p-12 text-center shadow-2xl shadow-gray-200/20">
                     <h2 className="text-3xl md:text-5xl font-bold mb-6">Let’s Build Your Digital Presence</h2>
-                    <p className="text-blue-100 text-lg max-w-2xl mx-auto mb-10">
+                    <p className="text-gray-400 text-lg max-w-2xl mx-auto mb-10">
                         If you’re looking for a reliable digital partner who can manage shoots, content, marketing, and promotions — we’re ready to work with you.
                     </p>
-                    <a href="/contact" className="inline-block px-8 py-4 bg-white text-blue-600 font-bold rounded-full hover:bg-gray-50 transition-colors hover:scale-105 transform duration-300 shadow-lg">
+                    <a href="/contact" className="inline-block px-8 py-4 bg-white text-gray-900 font-bold rounded-full hover:bg-gray-50 transition-colors hover:scale-105 transform duration-300 shadow-lg">
                         Get Started
                     </a>
                 </div>

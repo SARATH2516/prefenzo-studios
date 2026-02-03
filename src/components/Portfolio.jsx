@@ -11,9 +11,9 @@ const portfolioImages = [
         alt: "Wedding Photography",
         // From LEFT
         initial: { x: -500, y: 0, opacity: 0, rotate: 0, scale: 0.8 },
-        animate: { x: 0, y: 0, opacity: 1, rotate: -8, scale: 1 },
-        spread: { x: -350, y: -100, opacity: 1, rotate: -12, scale: 1 },
-        className: "w-[450px] h-[300px]",
+        animate: { x: 80, y: 0, opacity: 1, rotate: -8, scale: 1 },
+        spread: { x: -300, y: -100, opacity: 1, rotate: -12, scale: 1 },
+        className: "w-[400px] h-[260px]",
         zIndex: 10
     },
     {
@@ -22,9 +22,9 @@ const portfolioImages = [
         alt: "Engagement Shoot",
         // From RIGHT
         initial: { x: 500, y: 0, opacity: 0, rotate: 0, scale: 0.8 },
-        animate: { x: 0, y: -30, opacity: 1, rotate: 12, scale: 1 },
-        spread: { x: 320, y: 80, opacity: 1, rotate: 15, scale: 1 },
-        className: "w-[420px] h-[320px]",
+        animate: { x: 80, y: -30, opacity: 1, rotate: 12, scale: 1 },
+        spread: { x: 380, y: 80, opacity: 1, rotate: 15, scale: 1 },
+        className: "w-[380px] h-[280px]",
         zIndex: 20
     },
     {
@@ -33,9 +33,9 @@ const portfolioImages = [
         alt: "Reception Photography",
         // From BOTTOM CENTER
         initial: { x: 0, y: 400, opacity: 0, rotate: 0, scale: 0.8 },
-        animate: { x: 0, y: -60, opacity: 1, rotate: -5, scale: 1 },
-        spread: { x: 50, y: -200, opacity: 1, rotate: -3, scale: 1 },
-        className: "w-[480px] h-[280px]",
+        animate: { x: 80, y: -60, opacity: 1, rotate: -5, scale: 1 },
+        spread: { x: 120, y: -200, opacity: 1, rotate: -3, scale: 1 },
+        className: "w-[430px] h-[240px]",
         zIndex: 30
     },
     {
@@ -44,9 +44,9 @@ const portfolioImages = [
         alt: "Pre-Wedding",
         // From LEFT
         initial: { x: -500, y: 0, opacity: 0, rotate: 0, scale: 0.8 },
-        animate: { x: 0, y: -90, opacity: 1, rotate: 7, scale: 1 },
-        spread: { x: -280, y: 120, opacity: 1, rotate: 10, scale: 1 },
-        className: "w-[440px] h-[310px]",
+        animate: { x: 80, y: -90, opacity: 1, rotate: 7, scale: 1 },
+        spread: { x: -220, y: 120, opacity: 1, rotate: 10, scale: 1 },
+        className: "w-[400px] h-[270px]",
         zIndex: 40
     },
     {
@@ -55,9 +55,9 @@ const portfolioImages = [
         alt: "Birthday Party",
         // From RIGHT
         initial: { x: 500, y: 0, opacity: 0, rotate: 0, scale: 0.8 },
-        animate: { x: 0, y: -120, opacity: 1, rotate: -10, scale: 1 },
-        spread: { x: 380, y: -150, opacity: 1, rotate: -13, scale: 1 },
-        className: "w-[460px] h-[290px]",
+        animate: { x: 80, y: -120, opacity: 1, rotate: -10, scale: 1 },
+        spread: { x: 450, y: -150, opacity: 1, rotate: -13, scale: 1 },
+        className: "w-[410px] h-[250px]",
         zIndex: 50
     },
     {
@@ -66,9 +66,9 @@ const portfolioImages = [
         alt: "Baby Shower",
         // From BOTTOM CENTER
         initial: { x: 0, y: 400, opacity: 0, rotate: 0, scale: 0.8 },
-        animate: { x: 0, y: -150, opacity: 1, rotate: 6, scale: 1 },
-        spread: { x: -100, y: 150, opacity: 1, rotate: 8, scale: 1 },
-        className: "w-[430px] h-[305px]",
+        animate: { x: 80, y: -150, opacity: 1, rotate: 6, scale: 1 },
+        spread: { x: -20, y: 150, opacity: 1, rotate: 8, scale: 1 },
+        className: "w-[380px] h-[260px]",
         zIndex: 60
     },
     {
@@ -77,9 +77,9 @@ const portfolioImages = [
         alt: "Outdoor Portrait",
         // From LEFT
         initial: { x: -500, y: 0, opacity: 0, rotate: 0, scale: 0.8 },
-        animate: { x: 0, y: -180, opacity: 1, rotate: -7, scale: 1 },
-        spread: { x: 200, y: -80, opacity: 1, rotate: -9, scale: 1 },
-        className: "w-[470px] h-[295px]",
+        animate: { x: 80, y: -180, opacity: 1, rotate: -7, scale: 1 },
+        spread: { x: 280, y: -80, opacity: 1, rotate: -9, scale: 1 },
+        className: "w-[420px] h-[250px]",
         zIndex: 70
     },
     {
@@ -88,9 +88,9 @@ const portfolioImages = [
         alt: "Corporate Event",
         // From RIGHT
         initial: { x: 500, y: 0, opacity: 0, rotate: 0, scale: 0.8 },
-        animate: { x: 0, y: -210, opacity: 1, rotate: 9, scale: 1 },
-        spread: { x: -200, y: -50, opacity: 1, rotate: 11, scale: 1 },
-        className: "w-[450px] h-[285px]",
+        animate: { x: 80, y: -210, opacity: 1, rotate: 9, scale: 1 },
+        spread: { x: -100, y: -50, opacity: 1, rotate: 11, scale: 1 },
+        className: "w-[400px] h-[240px]",
         zIndex: 80
     }
 ];
