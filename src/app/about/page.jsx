@@ -5,7 +5,7 @@ import BackgroundLinesDemo from "@/components/ui/BackgroundLinesDemo";
 
 export default function AboutPage() {
     return (
-        <main className="bg-black min-h-screen text-white pb-5 overflow-x-hidden">
+        <main className="bg-white min-h-screen text-black pb-5 overflow-x-hidden">
             {/* Hero Section with Integrated Background Lines */}
             <section className="relative">
                 <BackgroundLinesDemo />
@@ -119,43 +119,24 @@ export default function AboutPage() {
                     </div>
                 </section>
 
-                <section className="mb-8 p-12 bg-black rounded-[3.5rem] relative overflow-hidden">
-                    {/* Flickering Bulb Glow Effect */}
-                    <motion.div
-                        animate={{
-                            opacity: [0.3, 0.4, 0.3, 0.5, 0.2, 0.4, 0.3],
-                            scale: [1, 1.05, 1, 1.1, 0.95, 1.05, 1]
-                        }}
-                        transition={{
-                            duration: 4,
-                            repeat: Infinity,
-                            ease: "easeInOut",
-                            times: [0, 0.2, 0.4, 0.5, 0.7, 0.8, 1]
-                        }}
-                        className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-gradient-to-b from-white/10 to-transparent blur-[120px] pointer-events-none"
-                    />
-
+                <section className="mb-24 p-4 md:p-12 bg-gray-50 rounded-[4rem] relative overflow-hidden shadow-inner">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="bg-zinc-950 text-white rounded-[3rem] p-12 md:p-20 overflow-hidden relative border border-white/5"
+                        className="bg-white text-black rounded-[3rem] p-8 md:p-20 overflow-hidden relative border border-gray-100 shadow-2xl"
                     >
                         <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                             <div>
                                 <div className="flex items-center gap-4 mb-8">
-                                    <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center relative">
-                                        <motion.div
-                                            animate={{ opacity: [1, 0.5, 1, 0.2, 0.8, 1] }}
-                                            transition={{ duration: 0.5, repeat: Infinity, repeatDelay: Math.random() * 5 }}
-                                            className="w-4 h-4 rounded-full bg-white shadow-[0_0_20px_#fff]"
-                                        />
+                                    <div className="w-12 h-12 rounded-full border border-black/10 flex items-center justify-center relative bg-black">
+                                        <div className="w-3 h-3 rounded-full bg-white shadow-[0_0_10px_#fff]" />
                                     </div>
-                                    <h2 className="text-4xl md:text-5xl font-bold">Our Philosophy</h2>
+                                    <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter italic">Our Philosophy</h2>
                                 </div>
-                                <p className="text-gray-400 text-lg mb-10 leading-relaxed">
+                                <p className="text-gray-500 text-xl mb-12 leading-relaxed font-medium">
                                     We believe digital growth is not about random posting or short-term visibility.
-                                    It’s about a consistent, clear brand communication system.
+                                    It’s about a consistent, clear brand <span className="text-black font-bold">communication system</span>.
                                 </p>
                                 <div className="space-y-6">
                                     {[
@@ -171,43 +152,27 @@ export default function AboutPage() {
                                             whileInView={{ opacity: 1, x: 0 }}
                                             viewport={{ once: true }}
                                             transition={{ delay: index * 0.1 }}
-                                            className="flex items-center gap-4"
+                                            className="flex items-center gap-4 group"
                                         >
-                                            <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center shrink-0">
-                                                <Check size={14} className="text-black" />
+                                            <div className="w-6 h-6 rounded-full bg-black flex items-center justify-center shrink-0 group-hover:scale-125 transition-transform">
+                                                <Check size={14} className="text-white" />
                                             </div>
-                                            <span className="text-lg font-medium text-gray-200">{item}</span>
+                                            <span className="text-lg font-bold text-gray-700 group-hover:text-black transition-colors uppercase tracking-tight">{item}</span>
                                         </motion.div>
                                     ))}
                                 </div>
                             </div>
                             <div className="relative group">
                                 <motion.div
-                                    animate={{
-                                        opacity: [1, 0.8, 0.9, 0.3, 0.8, 0.9, 1],
-                                        boxShadow: [
-                                            "0 0 20px rgba(255,255,255,0.1)",
-                                            "0 0 40px rgba(255,255,255,0.2)",
-                                            "0 0 20px rgba(255,255,255,0.1)",
-                                            "0 0 10px rgba(255,255,255,0.05)",
-                                            "0 0 30px rgba(255,255,255,0.15)",
-                                            "0 0 20px rgba(255,255,255,0.1)"
-                                        ]
-                                    }}
-                                    transition={{ duration: 2, repeat: Infinity, times: [0, 0.1, 0.3, 0.4, 0.6, 0.8, 1] }}
-                                    className="bg-white/5 p-2 rounded-[2rem] border border-white/10 relative overflow-hidden"
+                                    whileHover={{ scale: 1.02 }}
+                                    className="bg-gray-100 p-3 rounded-[2.5rem] border border-gray-200 relative overflow-hidden shadow-xl"
                                 >
                                     <img
                                         src="https://images.unsplash.com/photo-1510127034890-ba27508e9f1c?q=80&w=1000&auto=format&fit=crop"
                                         alt="Our Philosophy"
-                                        className="w-full h-[400px] object-cover rounded-[1.5rem] opacity-70 grayscale hover:grayscale-0 transition-all duration-700"
+                                        className="w-full h-[450px] object-cover rounded-[1.8rem] grayscale hover:grayscale-0 transition-all duration-700"
                                     />
-                                    {/* Flickering light ray overlay */}
-                                    <motion.div
-                                        animate={{ opacity: [0, 0.1, 0, 0.2, 0.05, 0] }}
-                                        transition={{ duration: 3, repeat: Infinity }}
-                                        className="absolute inset-0 bg-white pointer-events-none mix-blend-overlay"
-                                    />
+                                    <div className="absolute inset-0 bg-black/5 pointer-events-none group-hover:opacity-0 transition-opacity" />
                                 </motion.div>
                             </div>
                         </div>

@@ -33,61 +33,81 @@ const navLinks = [
 ];
 
 export default function Navbar() {
-    const [isScrolled, setIsScrolled] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const pathname = usePathname();
-    const isHome = pathname === "/";
 
-    useEffect(() => {
-        const handleScroll = () => {
-            setIsScrolled(window.scrollY > 50);
-        };
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
+    // Determine if the current page has a dark background
+    const isDarkPage = ["/", "/industries"].includes(pathname);
+
+    // Theme color classes
+    const textColor = isDarkPage ? "text-white" : "text-black";
+    const hoverTextColor = isDarkPage ? "group-hover:text-black" : "group-hover:text-white";
+    const hoverBgColor = isDarkPage ? "bg-white" : "bg-black";
+    const studiosColor = isDarkPage ? "text-white" : "text-black";
 
     return (
         <nav
-            className="absolute top-0 left-0 right-0 z-50 py-6 bg-transparent border-b border-transparent"
+            className={cn(
+                "absolute top-0 left-0 right-0 z-50 py-6 bg-transparent"
+            )}
         >
             <div className="container mx-auto px-6 flex items-center justify-between">
                 <Link
                     href="/"
                     className={cn(
-                        "text-2xl font-bold tracking-tighter relative z-50 group flex items-center gap-2",
-                        isScrolled || !isHome ? "text-black" : "text-white"
+                        "text-2xl font-bold tracking-tighter relative z-50 group flex items-center gap-1 transition-transform duration-300",
+                        textColor
                     )}
                 >
-                    <span className="bg-white px-2 font-black tracking-wide text-black">PREFENZO</span>
-                    <span className={cn("font-black  transition-colors tracking-wide", isScrolled || !isHome ? "text-gray-600 group-hover:text-blue-600" : "text-gray-300 group-hover:text-white")}>
+                    <span className={cn(
+                        "px-2 font-black tracking-wide transition-all duration-300",
+                        isDarkPage ? "bg-white text-black" : "bg-black text-white"
+                    )}>
+                        PREFENZO
+                    </span>
+                    <span className={cn(
+                        "font-black transition-colors tracking-wide",
+                        studiosColor
+                    )}>
                         STUDIOS
                     </span>
                 </Link>
 
                 {/* Desktop Nav */}
-                <div className="hidden md:flex items-center gap-8">
+                <div className="hidden md:flex items-center gap-1">
                     {navLinks.map((link) => (
                         <div key={link.name} className="relative group/item">
                             <Link
                                 href={link.href}
                                 className={cn(
-                                    "text-base font-medium hover:text-blue-600 transition-colors tracking-wide relative flex items-center gap-1 py-4",
-                                    isScrolled || !isHome ? "text-gray-600" : "text-white"
+                                    "px-6 py-2.5 text-sm font-bold transition-all duration-300 tracking-widest relative flex items-center gap-1 group overflow-hidden uppercase",
+                                    textColor,
+                                    hoverTextColor
                                 )}
                             >
-                                {link.name}
-                                <span className="absolute -bottom-1 left-0 w-0 h-px bg-blue-600 transition-all duration-300 group-hover/item:w-full" />
+                                {/* Rectangular Hover Background */}
+                                <span className={cn(
+                                    "absolute inset-0 -z-10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out",
+                                    hoverBgColor
+                                )} />
+
+                                <span className={cn(
+                                    "relative z-10 transition-colors duration-500 font-bold",
+                                    isDarkPage ? "group-hover:text-black" : "group-hover:text-white"
+                                )}>
+                                    {link.name}
+                                </span>
                             </Link>
 
                             {/* Dropdown Desktop */}
                             {link.dropdown && (
-                                <div className="absolute top-full left-0 w-48 pt-2 opacity-0 invisible group-hover/item:opacity-100 group-hover/item:visible transition-all duration-300 translate-y-2 group-hover/item:translate-y-0 shadow-2xl">
-                                    <div className="bg-white/90 backdrop-blur-xl border border-gray-100 rounded-xl overflow-hidden py-2 p-1 shadow-xl">
+                                <div className="absolute top-full left-0 w-56 pt-2 opacity-0 invisible group-hover/item:opacity-100 group-hover/item:visible transition-all duration-300 translate-y-2 group-hover/item:translate-y-0 z-50">
+                                    <div className="bg-white/95 backdrop-blur-2xl border border-gray-100 shadow-2xl overflow-hidden py-2">
                                         {link.dropdown.map((item) => (
                                             <Link
                                                 key={item.name}
                                                 href={item.href}
-                                                className="block px-4 py-2 text-xs font-medium text-gray-600 hover:text-blue-600 hover:bg-gray-50 rounded-lg transition-colors"
+                                                className="block px-6 py-3 text-[10px] font-black text-gray-400 hover:text-white hover:bg-black transition-all duration-200 uppercase tracking-widest border-l-4 border-transparent hover:border-black"
                                             >
                                                 {item.name}
                                             </Link>
@@ -101,7 +121,11 @@ export default function Navbar() {
 
                 {/* Mobile Toggle */}
                 <button
-                    className="md:hidden z-50 text-gray-900"
+                    className={cn(
+                        "md:hidden z-50 p-2 transition-all duration-300 active:scale-95",
+                        textColor,
+                        isOpen ? "text-black" : ""
+                    )}
                     onClick={() => setIsOpen(!isOpen)}
                 >
                     {isOpen ? <X size={28} /> : <Menu size={28} />}
@@ -111,36 +135,36 @@ export default function Navbar() {
                 <AnimatePresence>
                     {isOpen && (
                         <motion.div
-                            initial={{ opacity: 0, y: -20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -20 }}
-                            className="absolute top-0 left-0 w-full h-screen bg-white flex flex-col items-center justify-center gap-8 md:hidden"
+                            initial={{ opacity: 0, scale: 1.1 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 1.1 }}
+                            transition={{ type: "spring", damping: 30, stiffness: 200 }}
+                            className="fixed inset-0 w-full h-screen bg-white flex flex-col items-center justify-center gap-10 md:hidden z-40"
                         >
-                            {navLinks.map((link) => (
-                                <div key={link.name} className="flex flex-col items-center">
-                                    <Link
-                                        href={link.href}
-                                        onClick={() => setIsOpen(false)}
-                                        className="text-3xl font-light text-gray-900 hover:text-blue-600 transition-colors"
+                            <div className="flex flex-col items-center gap-8 w-full px-10">
+                                {navLinks.map((link, idx) => (
+                                    <motion.div
+                                        key={link.name}
+                                        initial={{ opacity: 0, y: 30 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: idx * 0.05 }}
+                                        className="w-full text-center"
                                     >
-                                        {link.name}
-                                    </Link>
-                                    {link.dropdown && (
-                                        <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 mt-4 px-6">
-                                            {link.dropdown.map((sub) => (
-                                                <Link
-                                                    key={sub.name}
-                                                    href={sub.href}
-                                                    onClick={() => setIsOpen(false)}
-                                                    className="text-sm font-medium text-gray-500 hover:text-blue-600 transition-colors"
-                                                >
-                                                    {sub.name}
-                                                </Link>
-                                            ))}
-                                        </div>
-                                    )}
-                                </div>
-                            ))}
+                                        <Link
+                                            href={link.href}
+                                            onClick={() => setIsOpen(false)}
+                                            className="text-6xl font-black text-gray-100 hover:text-black transition-all duration-300 tracking-tighter uppercase"
+                                        >
+                                            {link.name}
+                                        </Link>
+                                    </motion.div>
+                                ))}
+                            </div>
+
+                            {/* Decorative Mobile Text */}
+                            <div className="absolute bottom-10 left-10 text-[10vw] font-black text-gray-50 opacity-10 pointer-events-none select-none uppercase leading-none">
+                                Prefenzo <br /> Studios
+                            </div>
                         </motion.div>
                     )}
                 </AnimatePresence>
@@ -148,3 +172,4 @@ export default function Navbar() {
         </nav>
     );
 }
+
