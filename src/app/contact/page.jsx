@@ -1,41 +1,55 @@
 "use client";
-import { motion, AnimatePresence } from "framer-motion";
-import { ArrowDown, ArrowRight, MapPin } from "lucide-react";
+
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { ArrowDown, ArrowRight, MapPin, Check } from "lucide-react";
 import Link from "next/link";
-import { useState, useRef, useEffect } from "react";
+import Image from "next/image";
 
 export default function ContactPage() {
     const [formData, setFormData] = useState({
         name: "",
         email: "",
-        company: "",
-        budget: "",
+        phoneNumber: "",
         message: ""
     });
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const dropdownRef = useRef(null);
+    const [status, setStatus] = useState("idle"); // idle, loading, success, error
 
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-                setIsDropdownOpen(false);
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setStatus("loading");
+        const { name, email, phoneNumber, message } = formData;
+
+        try {
+            const response = await fetch("https://formspree.io/f/mwvnelbl", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    name,
+                    email,
+                    phone: phoneNumber,
+                    message
+                }),
+            });
+
+            if (response.ok) {
+                setStatus("success");
+                setFormData({ name: "", email: "", phoneNumber: "", message: "" });
+                // Auto-hide success message after 3 seconds
+                setTimeout(() => {
+                    setStatus("idle");
+                }, 3000);
+            } else {
+                console.error("Formspree submission failed");
+                setStatus("error");
             }
-        };
-
-        if (isDropdownOpen) {
-            document.addEventListener("mousedown", handleClickOutside);
+        } catch (error) {
+            console.error("Error submitting form:", error);
+            setStatus("error");
         }
-
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, [isDropdownOpen]);
-
-    const budgetOptions = [
-        { label: "Below ₹10K", value: "small" },
-        { label: "₹10K - ₹40K", value: "medium" },
-        { label: "₹40K+", value: "large" }
-    ];
+    };
 
     const slideUpReveal = {
         initial: { y: "110%", opacity: 0 },
@@ -119,7 +133,6 @@ export default function ContactPage() {
                     >
                         <h4 className="text-lg font-bold tracking-widest uppercase text-gray-400 mb-6 w-full">Location</h4>
                         <div className="space-y-4">
-
                             <a
                                 href="https://maps.google.com"
                                 target="_blank"
@@ -130,10 +143,8 @@ export default function ContactPage() {
                             <p className="text-xl md:text-xl font-medium w-full leading-tight">
                                 BBC, NGPASC, Coimbatore, India
                             </p>
-
                         </div>
                     </motion.div>
-
 
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
@@ -144,11 +155,15 @@ export default function ContactPage() {
                     >
                         <div>
                             <h4 className="text-xs font-bold tracking-widest uppercase text-gray-400 mb-6">General Enquiries</h4>
-                            <a href="mailto:hello@prefenzo.com" className="text-xl md:text-2xl font-medium hover:text-gray-500 transition-colors border-b border-transparent hover:border-gray-500">
-                                hello@prefenzo.com
-                            </a>
+                            <div className="space-y-3">
+                                <a href="mailto:prefenzotechnologies@gmail.com" className="block text-xl md:text-2xl font-medium hover:text-gray-500 transition-all hover:scale-105 hover:translate-x-2">
+                                    prefenzotechnologies@gmail.com
+                                </a>
+                                <a href="tel:+916369269611" className="block text-xl md:text-2xl font-medium hover:text-gray-500 transition-all hover:scale-105 hover:translate-x-2">
+                                    +91 6369269611
+                                </a>
+                            </div>
                         </div>
-
                     </motion.div>
 
                     <motion.div
@@ -156,17 +171,24 @@ export default function ContactPage() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8, delay: 0.4 }}
-                        className="space-y-12"
+                        className="space-y-12 ml-8"
                     >
-                        <div>
+                        <div className="ml-20">
                             <h4 className="text-xs font-bold tracking-widest uppercase text-gray-400 mb-6">Follow Us</h4>
-                            <div className="flex gap-6">
-                                {["IG", "BE", "LN", "TW"].map((social) => (
-                                    <a key={social} href="#" className="font-bold hover:text-gray-400 pb-1 border-b border-black hover:border-gray-400 transition-all">
-                                        {social}
-                                    </a>
-                                ))}
-                            </div>
+                            <a
+                                href="https://www.instagram.com/prefenzostudio?igsh=bzdycnhhdmJxZzV1"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-block hover:opacity-70 transition-opacity"
+                            >
+                                <Image
+                                    src="/instagram-logo.png"
+                                    alt="Instagram"
+                                    width={40}
+                                    height={40}
+                                    className="rounded-lg bg-white p-1"
+                                />
+                            </a>
                         </div>
                     </motion.div>
                 </section>
@@ -190,12 +212,15 @@ export default function ContactPage() {
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 1 }}
+                        onSubmit={handleSubmit}
                         className="space-y-12"
                     >
                         <div className="group relative">
                             <input
                                 type="text"
                                 placeholder="Name"
+                                value={formData.name}
+                                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                 className="w-full bg-transparent border-b-[2px] border-black/10 py-4 text-3xl font-medium focus:outline-none focus:border-black transition-colors placeholder:text-black/20"
                             />
                         </div>
@@ -203,69 +228,48 @@ export default function ContactPage() {
                             <input
                                 type="email"
                                 placeholder="Email"
+                                value={formData.email}
+                                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                                 className="w-full bg-transparent border-b-[2px] border-black/10 py-4 text-3xl font-medium focus:outline-none focus:border-black transition-colors placeholder:text-black/20"
                             />
                         </div>
                         <div className="group relative">
                             <input
-                                type="text"
-                                placeholder="Company"
+                                type="tel"
+                                placeholder="Phone Number"
+                                value={formData.phoneNumber}
+                                onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
                                 className="w-full bg-transparent border-b-[2px] border-black/10 py-4 text-3xl font-medium focus:outline-none focus:border-black transition-colors placeholder:text-black/20"
                             />
                         </div>
-                        <div ref={dropdownRef} className="group relative z-100">
-                            <div
-                                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                                className="w-full bg-transparent border-b-[2px] border-black/10 py-4 flex items-center justify-between cursor-pointer transition-colors focus-within:border-black hover:border-black"
-                            >
-                                <span className={`text-3xl font-medium ${!formData.budget ? 'text-black/20' : 'text-black'}`}>
-                                    {formData.budget ? budgetOptions.find(o => o.value === formData.budget)?.label : "Budget"}
-                                </span>
-                                <motion.div
-                                    animate={{ rotate: isDropdownOpen ? 180 : 0 }}
-                                    transition={{ duration: 0.3 }}
-                                >
-                                    <ArrowDown size={30} />
-                                </motion.div>
-                            </div>
 
-                            <AnimatePresence>
-                                {isDropdownOpen && (
-                                    <motion.div
-                                        initial={{ opacity: 0, y: -10 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        exit={{ opacity: 0, y: -10 }}
-                                        transition={{ duration: 0.2 }}
-                                        className="absolute top-full left-0 w-full bg-white border border-black/10 shadow-xl mt-2 overflow-hidden"
-                                    >
-                                        {budgetOptions.map((option) => (
-                                            <div
-                                                key={option.value}
-                                                onClick={() => {
-                                                    setFormData({ ...formData, budget: option.value });
-                                                    setIsDropdownOpen(false);
-                                                }}
-                                                className="px-6 py-4 text-xl hover:bg-black hover:text-white transition-colors cursor-pointer border-b border-black/5 last:border-none"
-                                            >
-                                                {option.label}
-                                            </div>
-                                        ))}
-                                    </motion.div>
-                                )}
-                            </AnimatePresence>
-                        </div>
                         <div className="group relative flex items-center">
                             <textarea
                                 placeholder="Message"
+                                value={formData.message}
+                                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                                 className="w-full bg-transparent border-b-[2px] border-black/10 py-4 pr-16 text-3xl font-medium focus:outline-none focus:border-black transition-colors placeholder:text-black/20 min-h-[100px] resize-none"
                             />
                             <button
                                 type="submit"
-                                className="absolute right-0 bottom-4 p-2 bg-black text-white rounded-full hover:bg-gray-800 transition-all hover:scale-110 active:scale-95"
+                                disabled={status === "loading"}
+                                className="absolute right-0 bottom-4 p-2 bg-black text-white rounded-full hover:bg-gray-800 transition-all hover:scale-110 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                                <ArrowRight className="-rotate-45 hover:rotate-0 transition-all" size={32} />
+                                {status === "loading" ? (
+                                    <div className="w-8 h-8 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                                ) : status === "success" ? (
+                                    <Check size={32} className="text-white" />
+                                ) : (
+                                    <ArrowRight className="-rotate-45 hover:rotate-0 transition-all" size={32} />
+                                )}
                             </button>
                         </div>
+                        {status === "error" && (
+                            <p className="text-black/60 text-sm mt-4 font-medium">Failed to send message. Please try again or email us directly.</p>
+                        )}
+                        {status === "success" && (
+                            <p className="text-black text-sm mt-4 font-bold">Message sent successfully! We'll get back to you soon.</p>
+                        )}
                     </motion.form>
                 </section>
 
