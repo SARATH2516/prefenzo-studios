@@ -37,7 +37,7 @@ export default function Navbar() {
     const pathname = usePathname();
 
     // Determine if the current page has a dark background
-    const isDarkPage = ["/", "/about", "/industries"].includes(pathname);
+    const isDarkPage = ["/", "/about"].includes(pathname);
 
     // Theme color classes
     const textColor = isDarkPage ? "text-white" : "text-black";
