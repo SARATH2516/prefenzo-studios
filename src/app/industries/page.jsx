@@ -60,13 +60,76 @@ const AnimatedCheck = ({ delay = 0 }) => {
 
 export default function IndustriesPage() {
     const containerRef = useRef(null);
+    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+    useEffect(() => {
+        const handleMouseMove = (e) => {
+            setMousePosition({
+                x: (e.clientX / window.innerWidth - 0.5) * 20,
+                y: (e.clientY / window.innerHeight - 0.5) * 20
+            });
+        };
+        window.addEventListener('mousemove', handleMouseMove);
+        return () => window.removeEventListener('mousemove', handleMouseMove);
+    }, []);
+
+    const letterVariants = {
+        hidden: {
+            opacity: 0,
+            y: 50,
+            rotateX: -90,
+            filter: "blur(10px)"
+        },
+        visible: {
+            opacity: 1,
+            y: 0,
+            rotateX: 0,
+            filter: "blur(0px)",
+            transition: {
+                duration: 0.7,
+                ease: [0.16, 1, 0.3, 1]
+            }
+        }
+    };
+
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.04,
+                delayChildren: 0.2
+            }
+        }
+    };
+
+    const splitText = (text) => {
+        return text.split('').map((char, index) => (
+            <motion.span
+                key={index}
+                variants={letterVariants}
+                className="inline-block"
+                style={{ display: 'inline-block' }}
+            >
+                {char === ' ' ? '\u00A0' : char}
+            </motion.span>
+        ));
+    };
 
     return (
         <main className="bg-white min-h-screen text-gray-900 overflow-hidden" ref={containerRef}>
             {/* Full-screen Hero Section */}
             <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
-                {/* Background Image */}
-                <div className="absolute inset-0 z-0">
+                {/* Background Image with Parallax */}
+                <motion.div
+                    className="absolute inset-0 z-0"
+                    style={{
+                        x: mousePosition.x,
+                        y: mousePosition.y,
+                        scale: 1.1
+                    }}
+                    transition={{ type: "spring", stiffness: 50, damping: 30 }}
+                >
                     <Image
                         src="/industries.jpg"
                         alt="Industries"
@@ -74,62 +137,146 @@ export default function IndustriesPage() {
                         className="object-cover"
                         priority
                     />
-                    {/* Dark Aesthetic Overlay */}
-                    <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]"></div>
+                    {/* Modern Gradient Overlay for Better Readability */}
+                    <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-white/80"></div>
+                    <div className="absolute inset-0 bg-gradient-to-tr from-blue-900/30 via-transparent to-purple-900/20"></div>
+
+                    {/* Animated Mesh Gradient */}
+                    <motion.div
+                        className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-purple-500/5 to-pink-500/10"
+                        animate={{
+                            opacity: [0.3, 0.5, 0.3],
+                        }}
+                        transition={{
+                            duration: 8,
+                            repeat: Infinity,
+                            ease: "easeInOut"
+                        }}
+                    />
+                </motion.div>
+
+                {/* Floating Particles */}
+                <div className="absolute inset-0 z-[1] pointer-events-none">
+                    {[...Array(15)].map((_, i) => (
+                        <motion.div
+                            key={i}
+                            className="absolute w-1 h-1 bg-white/40 rounded-full"
+                            style={{
+                                left: `${Math.random() * 100}%`,
+                                top: `${Math.random() * 100}%`,
+                            }}
+                            animate={{
+                                y: [0, -30, 0],
+                                opacity: [0, 1, 0],
+                                scale: [0, 1.5, 0],
+                            }}
+                            transition={{
+                                duration: 3 + Math.random() * 2,
+                                repeat: Infinity,
+                                delay: Math.random() * 2,
+                                ease: "easeInOut"
+                            }}
+                        />
+                    ))}
                 </div>
 
                 {/* Hero Content */}
                 <div className="container mx-auto px-6 relative z-10 text-center">
-                    <motion.h1
-                        initial={{ opacity: 0, y: 50 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 1, ease: "easeOut" }}
-                        className="text-5xl md:text-8xl font-bold mb-8 text-white tracking-tighter"
+                    {/* Small Label */}
+                    <motion.p
+                        initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
+                        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                        transition={{ duration: 0.6, delay: 0.1 }}
+                        className="text-xs md:text-sm font-bold tracking-[0.3em] uppercase text-white/80 mb-8"
                     >
-                        <TextType
-                            text={[
-                                "Digital Solutions for\nDifferent Industries"
-                            ]}
-                            className="text-white mt-10"
-                            typingSpeed={105}
-                            deletingSpeed={50}
-                            pauseDuration={999999}
-                            showCursor={true}
-                            cursorCharacter="_"
-                            loop={false}
-                            startOnVisible={true}
-                        />
-                    </motion.h1>
+                        Industries We Serve
+                    </motion.p>
 
-                    <motion.div
-                        initial={{ width: 0 }}
-                        animate={{ width: 140 }}
-                        transition={{ duration: 1.2, delay: 0.5, ease: "easeInOut" }}
-                        className="h-1.5 bg-white mx-auto mb-12 rounded-full shadow-[0_0_15px_rgba(255,255,255,0.5)]"
-                    ></motion.div>
+                    {/* Main Title with Letter Animation */}
+                    <div className="mb-8">
+                        <motion.h1
+                            variants={containerVariants}
+                            initial="hidden"
+                            animate="visible"
+                            className="text-5xl md:text-7xl lg:text-8xl font-black leading-[1.1] tracking-tighter text-white mb-4"
+                            style={{ perspective: "1000px" }}
+                        >
+                            <div className="mb-2">
+                                {splitText("DIGITAL SOLUTIONS")}
+                            </div>
+                        </motion.h1>
 
-                    <div className="max-w-4xl mx-auto space-y-6">
-                        <motion.p
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, delay: 0.8 }}
-                            className="text-xl md:text-3xl text-gray-200 leading-relaxed font-light"
+                        <motion.h1
+                            variants={containerVariants}
+                            initial="hidden"
+                            animate="visible"
+                            className="text-4xl md:text-6xl lg:text-7xl font-black leading-[1.1] tracking-tighter bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent"
+                            style={{
+                                perspective: "1000px",
+                                WebkitBackgroundClip: 'text',
+                                backgroundClip: 'text'
+                            }}
                         >
-                            Every industry has different audiences and expectations. We adapt our digital execution for
-                            consumer-focused businesses, service-based brands, and professional entities.
-                        </motion.p>
-                        <motion.p
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 0.7 }}
-                            transition={{ duration: 1, delay: 1.2 }}
-                            className="text-lg text-gray-400 font-medium tracking-widest uppercase"
-                        >
-                            Custom Strategies • Consistent Standards
-                        </motion.p>
+                            {splitText("FOR EVERY INDUSTRY")}
+                        </motion.h1>
                     </div>
 
+                    {/* Animated Divider */}
+                    <motion.div
+                        initial={{ width: 0, opacity: 0 }}
+                        animate={{ width: 160, opacity: 1 }}
+                        transition={{ duration: 1, delay: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                        className="h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 mx-auto mb-10 rounded-full shadow-[0_0_30px_rgba(139,92,246,0.6)]"
+                    />
 
+                    {/* Description with Glassmorphism */}
+                    <div className="max-w-4xl mx-auto">
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95, filter: "blur(15px)" }}
+                            animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                            transition={{ duration: 0.8, delay: 1.4 }}
+                            className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-8 md:p-10 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)]"
+                        >
+                            <p className="text-lg md:text-2xl text-black leading-relaxed font-light mb-4">
+                                Every industry has different audiences and expectations. We adapt our digital execution for
+                                consumer-focused businesses, service-based brands, and professional entities.
+                            </p>
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ duration: 1, delay: 1.8 }}
+                                className="flex items-center justify-center gap-4 text-sm md:text-base text-black/70 font-semibold tracking-widest uppercase"
+                            >
+                                <span className="inline-block w-8 h-[1px] bg-gradient-to-r from-transparent to-white/50"></span>
+                                Custom Strategies • Consistent Standards
+                                <span className="inline-block w-8 h-[1px] bg-gradient-to-l from-transparent to-white/50"></span>
+                            </motion.div>
+                        </motion.div>
+                    </div>
+
+                    {/* Scroll Indicator */}
+                    <motion.div
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 2, duration: 0.8 }}
+                        className="absolute bottom-12 left-1/2 -translate-x-1/2"
+                    >
+                        <motion.div
+                            animate={{
+                                y: [0, 12, 0],
+                                opacity: [0.3, 1, 0.3]
+                            }}
+                            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                            className="flex flex-col items-center gap-2"
+                        >
+                            <span className="text-xs text-white/60 font-medium tracking-widest uppercase">Scroll</span>
+                            <div className="w-[1px] h-16 bg-gradient-to-b from-white/60 via-white/30 to-transparent" />
+                        </motion.div>
+                    </motion.div>
                 </div>
+
+                {/* Vignette Effect */}
+                <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-white via-transparent to-transparent z-[2]" />
             </section>
 
             {/* Content Section */}
@@ -182,4 +329,3 @@ export default function IndustriesPage() {
         </main>
     );
 }
-

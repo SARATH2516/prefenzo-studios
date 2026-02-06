@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowDown, ArrowRight, MapPin, Check } from "lucide-react";
+import { ArrowDown, ArrowRight, MapPin, Check, Instagram } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -179,15 +179,9 @@ export default function ContactPage() {
                                 href="https://www.instagram.com/prefenzostudio?igsh=bzdycnhhdmJxZzV1"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-block hover:opacity-70 transition-opacity"
+                                className="inline-block hover:scale-110 transition-transform"
                             >
-                                <Image
-                                    src="/instagram-logo.png"
-                                    alt="Instagram"
-                                    width={40}
-                                    height={40}
-                                    className="rounded-lg bg-white p-1"
-                                />
+                                <Instagram size={36} className="text-black" strokeWidth={1.5} />
                             </a>
                         </div>
                     </motion.div>
